@@ -1,62 +1,41 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_list/Services/oauth2_authentication_service.dart';
 
-import '../Services/authentication_service.dart';
-import './home_screen.dart';
+import '../Services/password_authentication_service.dart';
 
 class LoginPage extends StatelessWidget {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: Text('Login with Google!')), body: Body());  }
-}
-
-class Body extends StatefulWidget {
-
-  @override
-  State<Body> createState() => _BodyState();
-}
-
-class _BodyState extends State<Body> {
-  late User user;
-
-  @override
-  void initState() {
-    super.initState();
-    signOutGoogle();
-  }
-
-  void click() {
-    signInWithGoogle().then((user) => {
-      this.user = user!,
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => HomeScreen(user)))
-    });
-  }
-
-  Widget googleLoginButton() {
-    return OutlinedButton(
-        onPressed: this.click,
-        // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(45)),
-        // splashColor: Colors.grey,
-        // borderSide: BorderSide(color: Colors.grey),
-        child: Padding(
-            padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Image(image: AssetImage('assets/google_logo.png'), height: 35),
-                Padding(
-                    padding: EdgeInsets.only(left: 10),
-                    child: Text('Sign in with Google',
-                        style: TextStyle(color: Colors.grey, fontSize: 25)))
-              ],
-            )));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(alignment: Alignment.center, child: googleLoginButton());
+    return Scaffold(
+      body: Column(
+        children: [
+          TextField(
+            controller: emailController,
+            decoration: InputDecoration(
+              labelText: "Email",
+            ),
+          ),
+          TextField(
+            controller: passwordController,
+            decoration: InputDecoration(
+              labelText: "Password",
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              context.read<PasswordAuthenticationService>().signIn(
+                email: emailController.text.trim(),
+                password: passwordController.text.trim(),
+              );
+            },
+            child: Text("Sign in"),
+          )
+        ],
+      ),
+    );
   }
 }

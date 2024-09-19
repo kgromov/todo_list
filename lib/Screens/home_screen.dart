@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../Services/authentication_service.dart';
+import '../Services/oauth2_authentication_service.dart';
 import '../Services/database_services.dart';
 import '../models/task.dart';
 import '../models/tasks_data.dart';
@@ -53,7 +53,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Text(loggedUserName,
                             style: TextStyle(color: Colors.grey, fontSize: 25))
                     ),
-                    TextButton(onPressed: signOutGoogle,
+                    TextButton(onPressed: () {
+                       context.read<Oauth2AuthenticationService>().signOut();
+                    },
                         child: Text('Sign out')
                     )
                   ]
