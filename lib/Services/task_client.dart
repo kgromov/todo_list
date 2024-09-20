@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../models/task.dart';
 import 'globals.dart';
 
-class DatabaseServices {
+class TaskClient {
   static Future<Task> addTask(String title) async {
     Map data = {
       "title": title,

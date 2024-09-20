@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:todo_list/Services/database_service.dart';
 import 'package:todo_list/Services/oauth2_authentication_service.dart';
 import '../models/tasks_data.dart';
 
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
     );
     */
     return ChangeNotifierProvider<TasksData>(
-      create: (context) => TasksData(),
+      create: (context) => TasksData(DatabaseService()),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         home: SigninPage(context.read<Oauth2AuthenticationService>()),
